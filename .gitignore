@@ -1,0 +1,35 @@
+# Frontend
+node_modules/
+frontend/dist/
+
+# Backend
+backend/target/
+
+# Environment files
+.env
+.env.*
+!.env.example
+
+# IDE
+.idea/
+.vscode/
+
+# Mac
+.DS_Store
+
+# Database backups
+*.sql
+*.dump
+*.bak
+
+# Logs
+*.log
+# Local backups and debug files
+/frontend backup copy/
+/backend/startup-error.txt
+/backend/application-local.properties
+
+# Local database files
+/database/
+/backend/src/main/resources/application.properties
+/backend/src/test/resources/application-integration-test.properties

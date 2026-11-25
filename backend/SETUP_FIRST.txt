@@ -1,0 +1,34 @@
+STOCKWISE AUTHENTICATION — READ BEFORE RUNNING
+
+1. Make a backup copy of your current backend folder.
+2. This folder is a merged backend containing your original controllers, product entity/repository, four DSA services, plus authentication/security files.
+3. Replace your backend folder with this updated backend folder only after backing up the old one.
+4. Your old application.properties contained a plain-text database password. It is intentionally NOT carried into this package. Rotate that MySQL password and set it as an environment variable.
+
+Set these environment variables in the same terminal session before starting Spring Boot:
+
+export SPRING_DATASOURCE_URL='jdbc:mysql://localhost:3306/stockwise_db'
+export SPRING_DATASOURCE_USERNAME='root'
+export SPRING_DATASOURCE_PASSWORD='YOUR_NEW_MYSQL_PASSWORD'
+export STOCKWISE_ADMIN_USERNAME='admin'
+export STOCKWISE_ADMIN_PASSWORD='CHOOSE_A_UNIQUE_PASSWORD_AT_LEAST_12_CHARACTERS'
+
+Do not use the example strings literally. Do not share the real passwords in chat or commit them to Git.
+
+5. Start backend as usual. On first successful startup, it creates the initial ADMIN account in app_users with a BCrypt password hash. Existing products are not deleted; Hibernate ddl-auto remains update.
+6. After login, an ADMIN can create normal users via POST /api/admin/users with JSON:
+   {"username":"staff01","password":"A-unique-password-12+","role":"USER"}
+   This endpoint requires ADMIN session and CSRF token.
+7. GET /api/admin/users lists account usernames and roles (never password hashes). Also ADMIN-only.
+
+Security:
+- /api/auth/csrf and /api/health are public.
+- /api/auth/login is public (CSRF protected).
+- /api/auth/me and logout require authentication.
+- All existing product/DSA APIs require authentication.
+- /api/admin/** requires ADMIN role.
+- Session cookies and CSRF protection are enabled.
+- CORS allows the Vite origins localhost:5173 and localhost:5174.
+
+IMPORTANT FRONTEND:
+Use the supplied StockWise_App.jsx and StockWise_App.css. These implement login, session checks, CSRF headers, logout, and hide Operations for USER role. Keep frontend and backend running on the configured local ports.
